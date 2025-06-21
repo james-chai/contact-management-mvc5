@@ -1,0 +1,108 @@
+﻿@model ContactManagement.Core.Contact
+
+@{
+    ViewBag.Title = "Delete Contact";
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('form').submit(function (e) {
+                e.preventDefault();
+                var form = this;
+
+                Swal.fire({
+                    title: 'Confirm Delete',
+                    text: "This action cannot be undone!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Delete',
+                    cancelButtonText: 'Cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $(form).off('submit');
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-danger text-white py-2">
+                    <h4 class="mb-0">Delete Contact</h4>
+                </div>
+                <div class="card-body p-3">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4 text-sm-right pr-0 border-bottom">@Html.DisplayNameFor(model => model.FirstName)</dt>
+                        <dd class="col-sm-8 pl-0 border-bottom">@Html.DisplayFor(model => model.FirstName)</dd>
+
+                        <dt class="col-sm-4 text-sm-right pr-0 border-bottom">@Html.DisplayNameFor(model => model.LastName)</dt>
+                        <dd class="col-sm-8 pl-0 border-bottom">@Html.DisplayFor(model => model.LastName)</dd>
+
+                        <dt class="col-sm-4 text-sm-right pr-0 border-bottom">@Html.DisplayNameFor(model => model.CompanyName)</dt>
+                        <dd class="col-sm-8 pl-0 border-bottom">@(string.IsNullOrEmpty(Model.CompanyName) ? "N/A" : Model.CompanyName)</dd>
+
+                        <dt class="col-sm-4 text-sm-right pr-0 border-bottom">@Html.DisplayNameFor(model => model.Mobile)</dt>
+                        <dd class="col-sm-8 pl-0 border-bottom">@(string.IsNullOrEmpty(Model.Mobile) ? "N/A" : Model.Mobile)</dd>
+
+                        <dt class="col-sm-4 text-sm-right pr-0">@Html.DisplayNameFor(model => model.Email)</dt>
+                        <dd class="col-sm-8 pl-0">@Model.Email</dd>
+                    </dl>
+                </div>
+                <div class="card-footer bg-light py-2">
+                    @using (Html.BeginForm("DeleteConfirmed", "Contacts", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <button type="submit" class="btn btn-danger btn-sm mr-2">
+                                    <i class="fas fa-trash-alt"></i> Confirm Delete
+                                </button>
+                                @Html.ActionLink("Cancel", "Index", "Home", null, new { @class = "btn btn-outline-secondary btn-sm" })
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-bottom {
+        border-bottom: 1px solid #dee2e6 !important;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    dt {
+        padding-top: 0.25rem;
+        font-weight: 500;
+    }
+
+    dd {
+        padding-top: 0.25rem;
+        margin-bottom: 0;
+    }
+
+    @@media (max-width: 576px) {
+        .text-sm-right {
+            text-align: left !important;
+        }
+
+        .border-bottom {
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.4rem;
+        }
+    }
+</style>

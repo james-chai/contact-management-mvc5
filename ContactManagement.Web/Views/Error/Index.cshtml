@@ -1,0 +1,35 @@
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container error-container">
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <h1 class="text-danger">Oops!</h1>
+            <h3>An error occurred while processing your request.</h3>
+
+            <div class="mt-4">
+                <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg">
+                    <i class="fas fa-home"></i> Go Back Home
+                </a>
+            </div>
+
+            @if (HttpContext.Current.IsDebuggingEnabled)
+            {
+                <div class="alert alert-warning mt-4 text-left">
+                    <p><strong>Error:</strong> @ViewBag.ErrorMessage</p>
+                    <p><strong>Controller:</strong> @ViewBag.ControllerName</p>
+                    <p><strong>Action:</strong> @ViewBag.ActionName</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .error-container {
+        margin-top: 50px;
+        padding: 20px;
+    }
+</style>
